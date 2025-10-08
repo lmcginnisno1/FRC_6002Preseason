@@ -75,7 +75,7 @@ public class GroundPivot extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("GroundPivot", inputs);
 
-        io.PID();
+        // io.PID();
         io.periodic();
 
         if (mechanism2d != null) mechanism2d.setGroundPivotAngle(getPosition());

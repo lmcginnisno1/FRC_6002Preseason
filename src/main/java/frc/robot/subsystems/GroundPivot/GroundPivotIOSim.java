@@ -27,8 +27,8 @@ public class GroundPivotIOSim implements GroundPivotIO {
 
     public GroundPivotIOSim() {
         groundPivotSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), .9, GroundPivotConstants.kGearRatio),
-                DCMotor.getNeo550(1));
+                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .3, GroundPivotConstants.kGearRatio),
+                DCMotor.getNEO(1));
 
         groundPivotSim.setAngle(-Math.PI / 2);
 

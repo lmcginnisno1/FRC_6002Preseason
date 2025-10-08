@@ -33,7 +33,7 @@ public class WristIOSim implements WristIO {
 
     public WristIOSim() {
         flippyWristSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .2, WristConstants.kFlippyGearRatio),
+                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .5, WristConstants.kFlippyGearRatio),
                 DCMotor.getNEO(1));
 
         flippyWristSim.setAngle(-Math.PI / 2);
