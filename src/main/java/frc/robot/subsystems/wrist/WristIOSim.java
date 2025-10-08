@@ -8,9 +8,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class WristIOSim implements WristIO {
-    private final DCMotorSim flippyWristSim;
+    private final SingleJointedArmSim flippyWristSim;
     private final DCMotorSim spinnyWristSim;
 
     private final Constraints flippyWristConstraints =
@@ -30,13 +31,21 @@ public class WristIOSim implements WristIO {
             new ArmFeedforward(WristConstants.kSpinnySSim, WristConstants.kSpinnyVSim, WristConstants.kSpinnyGSim);
     private TrapezoidProfile.State spinnySetpoint;
     private TrapezoidProfile.State spinnyGoal;
+    private double flippyVoltage = 0;
 
     public WristIOSim() {
-        flippyWristSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .5, WristConstants.kFlippyGearRatio),
-                DCMotor.getNEO(1));
+        flippyWristSim = new SingleJointedArmSim(
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .5, WristConstants.kFlippyGearRatio),
+            DCMotor.getNEO(1),
+            WristConstants.kFlippyGearRatio,
+            Units.inchesToMeters(10),
+            -Math.PI,
+            Math.PI,
+            true,
+            0
+        );
 
-        flippyWristSim.setAngle(-Math.PI / 2);
+        flippyWristSim.setState(-Math.PI / 2, 0);
 
         spinnyWristSim = new DCMotorSim(
                 LinearSystemId.createDCMotorSystem(DCMotor.getNeo550(1), .2, WristConstants.kSpinnyGearRatio),
@@ -70,12 +79,12 @@ public class WristIOSim implements WristIO {
 
     @Override
     public double getFlippyPosition() {
-        return flippyWristSim.getAngularPositionRotations() * WristConstants.kPositionConversionFactor;
+        return flippyWristSim.getAngleRads();
     }
 
     @Override
     public double getFlippyVoltage() {
-        return flippyWristSim.getInputVoltage();
+        return flippyVoltage;
     }
 
     @Override
@@ -101,17 +110,18 @@ public class WristIOSim implements WristIO {
 
     @Override
     public double getFlippyVelocity() {
-        return flippyWristSim.getAngularVelocityRadPerSec();
+        return flippyWristSim.getVelocityRadPerSec();
     }
 
     @Override
     public void resetFlippyEncoder() {
-        flippyWristSim.setAngle(0);
+        flippyWristSim.setState(0, 0);
     }
 
     @Override
     public void runFlippyCharacterization(double volts) {
         flippyWristSim.setInputVoltage(volts);
+        flippyVoltage = volts;
     }
 
     @Override
@@ -192,6 +202,7 @@ public class WristIOSim implements WristIO {
         double flippyVoltage = flippyWristController.calculate(getFlippyPosition(), flippyProfile.position)
                 + flippyWristFeedForward.calculate(getFlippyPosition(), flippySetpoint.velocity);
         flippyWristSim.setInputVoltage(flippyVoltage);
+        this.flippyVoltage = flippyVoltage;
 
         var spinnyProfile = new TrapezoidProfile(spinnyWristConstraints).calculate(0.02, spinnySetpoint, spinnyGoal);
         spinnySetpoint = spinnyProfile;

@@ -7,10 +7,10 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class PivotIOSim implements PivotIO {
-    private final DCMotorSim pivotSim;
+    private final SingleJointedArmSim pivotSim;
     private final Constraints pivotConstraints = new Constraints(PivotConstants.kMaxVel, PivotConstants.kMaxAccel);
     private final PIDController pivotController =
             new PIDController(PivotConstants.kPSim, PivotConstants.kISim, PivotConstants.kDSim);
@@ -20,13 +20,21 @@ public class PivotIOSim implements PivotIO {
     private TrapezoidProfile.State goal;
     private double lastVel = 0;
     private double currentVel = 0;
+    private double pivotVoltage = 0;
 
     public PivotIOSim() {
-        pivotSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(2), 4.68, PivotConstants.gearRatio),
-                DCMotor.getNEO(2));
+        pivotSim = new SingleJointedArmSim(
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(2), 4.68, PivotConstants.kGearRatio),
+            DCMotor.getNEO(2),
+            PivotConstants.kGearRatio,
+            Units.inchesToMeters(50),
+            0,
+            Units.radiansToDegrees(100),
+            true,
+            PivotConstants.kHome
+        );
 
-        pivotSim.setAngle(PivotConstants.kHome);
+        pivotSim.setState(PivotConstants.kHome, 0);
 
         setpoint = new TrapezoidProfile.State(Units.degreesToRadians(0), 0);
         goal = setpoint;
@@ -47,12 +55,12 @@ public class PivotIOSim implements PivotIO {
 
     @Override
     public double getPosition() {
-        return pivotSim.getAngularPositionRad();
+        return pivotSim.getAngleRads();
     }
 
     @Override
     public double getLeftVoltage() {
-        return pivotSim.getInputVoltage();
+        return pivotVoltage;
     }
 
     @Override
@@ -62,7 +70,7 @@ public class PivotIOSim implements PivotIO {
 
     @Override
     public double getRightVoltage() {
-        return pivotSim.getInputVoltage();
+        return pivotVoltage;
     }
 
     @Override
@@ -88,12 +96,12 @@ public class PivotIOSim implements PivotIO {
 
     @Override
     public double getVelocity() {
-        return pivotSim.getAngularVelocityRadPerSec();
+        return pivotSim.getVelocityRadPerSec();
     }
 
     @Override
     public void resetEncoder() {
-        pivotSim.setAngle(0);
+        pivotSim.setState(0, 0);
     }
 
     @Override
@@ -111,6 +119,7 @@ public class PivotIOSim implements PivotIO {
     @Override
     public void runCharacterization(double volts) {
         pivotSim.setInputVoltage(volts);
+        pivotVoltage = volts;
     }
 
     @Override
@@ -125,6 +134,7 @@ public class PivotIOSim implements PivotIO {
                 + pivotFeedforward.calculate(getPosition(), setpoint.velocity, accel);
 
         pivotSim.setInputVoltage(voltage);
+        pivotVoltage = voltage;
 
         lastVel = getVelocity();
     }

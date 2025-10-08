@@ -10,7 +10,7 @@ public class PivotConstants {
     public static final boolean kRightInverted = false;
 
     public static final int kCurrentLimit = 60;
-    public static final double gearRatio = 216.6666666666667;
+    public static final double kGearRatio = 216.6666666666667;
 
     public static final double kP = 2;
     public static final double kI = 0.0;
@@ -37,7 +37,7 @@ public class PivotConstants {
     public static final double kPositionConversionFactor = Math.PI * 2;
     public static final double kVelcoityConversionFactor = kPositionConversionFactor / 60;
 
-    public static final double kPositionConversionFactorSim = Math.PI * 2 * gearRatio;
+    public static final double kPositionConversionFactorSim = Math.PI * 2 * kGearRatio;
     public static final double kVelcoityConversionFactorSim = kPositionConversionFactor / 60;
 
     public static final double kTolerance = 3;

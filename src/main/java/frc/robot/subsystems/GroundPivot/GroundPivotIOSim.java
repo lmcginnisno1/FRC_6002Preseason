@@ -7,10 +7,10 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class GroundPivotIOSim implements GroundPivotIO {
-    private final DCMotorSim groundPivotSim;
+    private final SingleJointedArmSim groundPivotSim;
     private final Constraints groundPivotConstraints =
             new Constraints(GroundPivotConstants.kMaxVel, GroundPivotConstants.kMaxAccel);
     private final PIDController groundPivotController =
@@ -24,13 +24,21 @@ public class GroundPivotIOSim implements GroundPivotIO {
     private TrapezoidProfile.State goal;
     private double lastVel = 0;
     private double currentVel = 0;
+    private double groundPivotVoltage = 0;
 
     public GroundPivotIOSim() {
-        groundPivotSim = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .3, GroundPivotConstants.kGearRatio),
-                DCMotor.getNEO(1));
+        groundPivotSim = new SingleJointedArmSim(
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .3, GroundPivotConstants.kGearRatio),
+            DCMotor.getNEO(1),
+            GroundPivotConstants.kGearRatio,
+            Units.inchesToMeters(13.5),
+            -Math.PI/2,
+            Math.PI/2,
+            true,
+            -Math.PI/2
+        );
 
-        groundPivotSim.setAngle(-Math.PI / 2);
+        groundPivotSim.setState(-Math.PI / 2, 0);
 
         setpoint = new TrapezoidProfile.State(getPosition(), 0);
         goal = setpoint;
@@ -49,12 +57,12 @@ public class GroundPivotIOSim implements GroundPivotIO {
 
     @Override
     public double getPosition() {
-        return groundPivotSim.getAngularPositionRad();
+        return groundPivotSim.getAngleRads();
     }
 
     @Override
     public double getVelocity() {
-        return groundPivotSim.getAngularVelocityRadPerSec();
+        return groundPivotSim.getVelocityRadPerSec();
     }
 
     @Override
@@ -75,7 +83,7 @@ public class GroundPivotIOSim implements GroundPivotIO {
 
     @Override
     public double getVoltage() {
-        return groundPivotSim.getInputVoltage();
+        return groundPivotVoltage;
     }
 
     @Override
@@ -98,6 +106,7 @@ public class GroundPivotIOSim implements GroundPivotIO {
     @Override
     public void runCharacterization(double volts) {
         groundPivotSim.setInput(volts);
+        groundPivotVoltage = volts;
     }
 
     @Override
@@ -112,6 +121,7 @@ public class GroundPivotIOSim implements GroundPivotIO {
                 + groundPivotFeedforward.calculate(getPosition(), setpoint.velocity, accel);
 
         groundPivotSim.setInput(voltage);
+        groundPivotVoltage = voltage;
 
         lastVel = getVelocity();
     }

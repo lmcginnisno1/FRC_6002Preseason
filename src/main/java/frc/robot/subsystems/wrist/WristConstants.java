@@ -67,7 +67,7 @@ public class WristConstants {
     public static final class FlippyPositions {
         public static final double kHome = Math.toRadians(0);
         public static final double kClimb = Math.toRadians(85);
-        public static final double kReady = Math.toRadians(-0);
+        public static final double kReady = Math.toRadians(0);
         public static final double kIntake = Math.toRadians(-26);
         public static final double kIntakeGround = Math.toRadians(-122);
         public static final double kDeployL2 = Math.toRadians(65);

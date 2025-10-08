@@ -144,10 +144,10 @@ public class RobotContainer {
         driver.povDown().onTrue(wrist.getFlippySysId().dynamic(Direction.kForward));
         driver.povRight().onTrue(wrist.getFlippySysId().dynamic(Direction.kReverse));
 
-        driver.povUp().onTrue(groundPivot.getSysId().quasistatic(Direction.kForward));
-        driver.povLeft().onTrue(groundPivot.getSysId().quasistatic(Direction.kReverse));
-        driver.povDown().onTrue(groundPivot.getSysId().dynamic(Direction.kForward));
-        driver.povRight().onTrue(groundPivot.getSysId().dynamic(Direction.kReverse));
+        // driver.povUp().onTrue(groundPivot.getSysId().quasistatic(Direction.kForward));
+        // driver.povLeft().onTrue(groundPivot.getSysId().quasistatic(Direction.kReverse));
+        // driver.povDown().onTrue(groundPivot.getSysId().dynamic(Direction.kForward));
+        // driver.povRight().onTrue(groundPivot.getSysId().dynamic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {
