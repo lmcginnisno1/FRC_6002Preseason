@@ -22,14 +22,14 @@ public class PivotConstants {
     public static final double kG = 0.025;
     public static final double kA = 0.0;
 
-    public static final double kPSim = 0.002828;
+    public static final double kPSim = 0.0099292;
     public static final double kISim = 0.0;
     public static final double kDSim = 0.0;
 
-    public static final double kVSim = 4.2923;
-    public static final double kSSim = 0.022051;
-    public static final double kGSim = 0.0;
-    public static final double kASim = 0.031434;
+    public static final double kVSim = 4.2902;
+    public static final double kSSim = 0.016975;
+    public static final double kGSim = 0.57471;
+    public static final double kASim = 0.039184;
 
     public static final double kMaxVel = Units.degreesToRadians(30);
     public static final double kMaxAccel = Units.degreesToRadians(30);

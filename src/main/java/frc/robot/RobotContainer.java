@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.*;
 import frc.robot.subsystems.GroundIntake.*;
 import frc.robot.subsystems.GroundPivot.*;
@@ -133,21 +132,7 @@ public class RobotContainer {
     private Command autonomousCommand = autoChooser.get();
 
     public void configureButtonBindings() {
-        // driver.a().onTrue(new InstantCommand (()-> groundPivot.setGoal(GroundPivotConstants.kDeploy)));
-        // driver.b().onTrue(new InstantCommand(()-> groundPivot.setGoal(GroundPivotConstants.kHome)));
 
-        // driver.x().onTrue(new InstantCommand(()-> wrist.setFlippyGoal(WristConstants.FlippyPositions.kHome)));
-        // driver.y().onTrue(new InstantCommand(()-> wrist.setFlippyGoal(WristConstants.FlippyPositions.kDeployL4)));
-
-        driver.povUp().onTrue(wrist.getFlippySysId().quasistatic(Direction.kForward));
-        driver.povLeft().onTrue(wrist.getFlippySysId().quasistatic(Direction.kReverse));
-        driver.povDown().onTrue(wrist.getFlippySysId().dynamic(Direction.kForward));
-        driver.povRight().onTrue(wrist.getFlippySysId().dynamic(Direction.kReverse));
-
-        // driver.povUp().onTrue(groundPivot.getSysId().quasistatic(Direction.kForward));
-        // driver.povLeft().onTrue(groundPivot.getSysId().quasistatic(Direction.kReverse));
-        // driver.povDown().onTrue(groundPivot.getSysId().dynamic(Direction.kForward));
-        // driver.povRight().onTrue(groundPivot.getSysId().dynamic(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

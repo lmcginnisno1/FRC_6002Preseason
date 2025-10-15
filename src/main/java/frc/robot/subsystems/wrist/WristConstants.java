@@ -21,14 +21,14 @@ public class WristConstants {
     public static final double kFlippyG = 0.0;
     public static final double kFlippyA = 0.0;
 
-    public static final double kFlippyPSim = 0.0;
+    public static final double kFlippyPSim = 0.00045884;
     public static final double kFlippyISim = 0.0;
     public static final double kFlippyDSim = 0.0;
 
-    public static final double kFlippyVSim = 0.0;
-    public static final double kFlippySSim = 0.0;
-    public static final double kFlippyGSim = 0.0;
-    public static final double kFlippyASim = 0.0;
+    public static final double kFlippyVSim = 0.029999;
+    public static final double kFlippySSim = 0.0054505;
+    public static final double kFlippyGSim = 1.5485;
+    public static final double kFlippyASim = 0.00043841;
 
     public static final double kFlippyMaxVel = 1;
     public static final double kFlippyMaxAccel = .5;

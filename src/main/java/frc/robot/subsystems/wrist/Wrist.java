@@ -39,7 +39,7 @@ public class Wrist extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("Wrist", inputs);
 
-        // io.PID();
+        io.PID();
         io.periodic();
 
         if (mechanism2d != null) mechanism2d.setWristAngle(Units.radiansToDegrees(getFlippyPosition()));

@@ -28,7 +28,7 @@ public class GroundPivotIOSim implements GroundPivotIO {
 
     public GroundPivotIOSim() {
         groundPivotSim = new SingleJointedArmSim(
-            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .3, GroundPivotConstants.kGearRatio),
+            LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), .67, GroundPivotConstants.kGearRatio),
             DCMotor.getNEO(1),
             GroundPivotConstants.kGearRatio,
             Units.inchesToMeters(13.5),

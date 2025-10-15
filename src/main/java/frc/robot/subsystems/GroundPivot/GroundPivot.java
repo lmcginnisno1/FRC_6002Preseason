@@ -2,6 +2,7 @@ package frc.robot.subsystems.GroundPivot;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -75,9 +76,9 @@ public class GroundPivot extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("GroundPivot", inputs);
 
-        // io.PID();
+        io.PID();
         io.periodic();
 
-        if (mechanism2d != null) mechanism2d.setGroundPivotAngle(getPosition());
+        if (mechanism2d != null) mechanism2d.setGroundPivotAngle(Units.radiansToDegrees(getPosition() + Math.PI/2));
     }
 }

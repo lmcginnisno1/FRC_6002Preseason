@@ -14,14 +14,14 @@ public class GroundPivotConstants {
     public static final double kS = 0.0;
     public static final double kA = .14;
 
-    public static final double kPSim = 0.013735;
+    public static final double kPSim = 0.0039071;
     public static final double kISim = 0.0;
     public static final double kDSim = 0.0;
     public static final double kFFSim = 0.0;
-    public static final double kVSim = 0.012907;
-    public static final double kGSim = 0.00035025;
-    public static final double kSSim = 0.011235;
-    public static final double kASim = 0.002687;
+    public static final double kVSim = 0.024453;
+    public static final double kGSim = 1.8296;
+    public static final double kSSim = 0.037411;
+    public static final double kASim = 0.00079128;
 
     public static final double kConversionFactor = 2 * Math.PI;
     public static final double kOffset = Math.toRadians(-180);

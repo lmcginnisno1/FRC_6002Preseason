@@ -31,7 +31,6 @@ public class Pivot extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("Pivot", inputs);
 
-        // run trapezoid profile and periodic
         io.PID();
         io.periodic();
         if (mechanism2d != null) {
